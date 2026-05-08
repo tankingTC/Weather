@@ -21,4 +21,9 @@
 *.jks
 *.keystore
 
+开发文档.md
+需求设计文档.md
+页面设计.md
+
+
 local.properties

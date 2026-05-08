@@ -902,13 +902,12 @@ public class MainActivity extends AppCompatActivity {
         ViewCompat.setOnApplyWindowInsetsListener(aiAssistantBinding.getRoot(), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             int imeBottom = insets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
-            int bottomInset = Math.max(systemBars.bottom, imeBottom);
             v.setPadding(v.getPaddingLeft(), rootPaddingTop + systemBars.top, v.getPaddingRight(), rootPaddingBottom);
             aiAssistantBinding.assistantComposerContainer.setPadding(
                     aiAssistantBinding.assistantComposerContainer.getPaddingLeft(),
                     aiAssistantBinding.assistantComposerContainer.getPaddingTop(),
                     aiAssistantBinding.assistantComposerContainer.getPaddingRight(),
-                    composerPaddingBottom + bottomInset
+                    composerPaddingBottom + systemBars.bottom
             );
             aiAssistantBinding.aiChatRecyclerView.setPadding(
                     aiAssistantBinding.aiChatRecyclerView.getPaddingLeft(),
@@ -967,7 +966,6 @@ public class MainActivity extends AppCompatActivity {
                 sendAssistantMessage(getString(R.string.ai_prompt_umbrella)));
         aiAssistantBinding.promptPlanChip.setOnClickListener(v ->
                 sendAssistantMessage(getString(R.string.ai_prompt_plan)));
-        bindAssistantActionButton(aiAssistantBinding.voiceInputButton);
         syncAssistantSendState();
     }
 
@@ -1119,10 +1117,6 @@ public class MainActivity extends AppCompatActivity {
         boolean enabled = hasInput && !assistantRequestInFlight && aiAssistantBinding.aiInputEditText.isEnabled();
         aiAssistantBinding.sendButton.setEnabled(enabled);
         aiAssistantBinding.sendButton.setAlpha(enabled ? 1f : 0.56f);
-    }
-
-    private void bindAssistantActionButton(View actionView) {
-        actionView.setOnClickListener(v -> showToast(getString(R.string.ai_feature_coming_soon)));
     }
 
     private void showAssistantInputMethod() {

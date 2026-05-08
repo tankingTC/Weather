@@ -6,4 +6,5 @@
     <string name="ai_action_refresh">刷新建议</string>
     <string name="ai_action_more">更多功能</string>
     <string name="ai_feature_coming_soon">这个入口我先给你留好了，下一步我们再继续接功能</string>
+    <string name="ai_input_hint_short">输入想问的问题…</string>
 </resources>
