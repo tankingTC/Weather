@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/ic_weather_fallback_overcast" />
+
+    <item
+        android:width="10dp"
+        android:height="14dp"
+        android:gravity="bottom|center_horizontal"
+        android:bottom="4dp"
+        android:left="12dp"
+        android:drawable="@drawable/ic_weather_drop_glass" />
+
+    <item
+        android:width="12dp"
+        android:height="18dp"
+        android:gravity="bottom|center_horizontal"
+        android:bottom="1dp"
+        android:drawable="@drawable/ic_weather_drop_glass" />
+
+    <item
+        android:width="9dp"
+        android:height="13dp"
+        android:gravity="bottom|center_horizontal"
+        android:bottom="5dp"
+        android:right="13dp"
+        android:drawable="@drawable/ic_weather_drop_glass" />
+</layer-list>

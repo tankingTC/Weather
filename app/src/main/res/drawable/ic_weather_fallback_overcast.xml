@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:width="58dp"
+        android:height="58dp"
+        android:gravity="center">
+        <shape android:shape="oval">
+            <gradient
+                android:type="radial"
+                android:gradientRadius="30dp"
+                android:startColor="#2AEAF2FF"
+                android:centerColor="#14D2DCEC"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+
+    <item
+        android:width="40dp"
+        android:height="25dp"
+        android:gravity="top|center_horizontal"
+        android:top="12dp"
+        android:left="4dp">
+        <shape android:shape="oval">
+            <gradient
+                android:angle="270"
+                android:startColor="#FFF6FAFF"
+                android:centerColor="#FFD2DBE6"
+                android:endColor="#FFA0ADBF" />
+        </shape>
+    </item>
+
+    <item
+        android:width="34dp"
+        android:height="21dp"
+        android:gravity="top|center_horizontal"
+        android:top="9dp"
+        android:right="6dp">
+        <shape android:shape="oval">
+            <gradient
+                android:angle="270"
+                android:startColor="#FFF1F6FC"
+                android:centerColor="#FFCAD4E0"
+                android:endColor="#FF8B9AAD" />
+        </shape>
+    </item>
+
+    <item
+        android:width="44dp"
+        android:height="26dp"
+        android:gravity="bottom|center_horizontal"
+        android:bottom="9dp">
+        <shape android:shape="oval">
+            <gradient
+                android:angle="270"
+                android:startColor="#FFF7FAFE"
+                android:centerColor="#FFD6DEE7"
+                android:endColor="#FF9AA8BB" />
+        </shape>
+    </item>
+
+    <item
+        android:width="28dp"
+        android:height="7dp"
+        android:gravity="top|center_horizontal"
+        android:top="15dp"
+        android:left="11dp">
+        <shape android:shape="oval">
+            <gradient
+                android:angle="0"
+                android:startColor="#72FFFFFF"
+                android:endColor="#00FFFFFF" />
+        </shape>
+    </item>
+</layer-list>

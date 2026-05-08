@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="ai_action_voice">语音输入</string>
+    <string name="ai_action_gallery">发送图片</string>
+    <string name="ai_action_camera">拍照</string>
+    <string name="ai_action_refresh">刷新建议</string>
+    <string name="ai_action_more">更多功能</string>
+    <string name="ai_feature_coming_soon">这个入口我先给你留好了，下一步我们再继续接功能</string>
+</resources>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="manage_city_clean">城市管理</string>
+    <string name="home_metric_feels_like_symbol">◎</string>
+    <string name="home_metric_humidity_symbol">◈</string>
+    <string name="home_metric_wind_symbol">➜</string>
+    <string name="home_weather_indices_title">天气指数</string>
+    <string name="home_index_precip">降水</string>
+    <string name="home_index_pressure">气压</string>
+    <string name="home_index_visibility">能见度</string>
+    <string name="home_index_cloud">云量</string>
+    <string name="home_forecast_title">未来 7 天</string>
+    <string name="home_ai_badge">AI 推荐</string>
+    <string name="home_weather_orb">天气图标光球</string>
+</resources>
