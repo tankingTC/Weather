@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="map_pick_title">地图选城</string>
+    <string name="map_pick_heading">移动地图，中心即所选位置</string>
+    <string name="map_pick_hint">打开后会先定位到当前位置，拖动或缩放地图停下后会自动刷新地址</string>
+    <string name="map_pick_recenter">回到当前位置</string>
+    <string name="map_pick_no_city">正在准备地图位置</string>
+    <string name="map_pick_no_coord">地图稳定后会自动识别当前位置</string>
+    <string name="map_pick_confirm">添加到天气</string>
+    <string name="map_pick_confirming">正在添加…</string>
+    <string name="map_pick_init_failed">地图初始化失败，请检查百度地图 AK、包名和签名配置</string>
+    <string name="map_pick_resolving_city">正在识别当前位置…</string>
+    <string name="map_pick_resolve_failed">没有识别到可用地点</string>
+    <string name="map_pick_need_select">请先等待地图识别当前位置</string>
+    <string name="map_pick_marker_desc">当前选择位置</string>
+    <string name="map_pick_using_default">暂时拿不到当前位置，已切换到默认地图中心</string>
+    <string name="map_pick_permission_denied">没有定位权限，已切换到默认地图中心</string>
+    <string name="map_pick_add_failed">地点已识别，但添加到天气失败，请稍后重试</string>
+    <string name="map_pick_center_badge">中心位置</string>
+    <string name="map_pick_address_pending">正在补充地址信息…</string>
+    <string name="map_pick_location_fallback">当前位置</string>
+</resources>

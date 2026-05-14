@@ -25,6 +25,9 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
+        ndk {
+            abiFilters += listOf("arm64-v8a")
+        }
 
         buildConfigField(
             "String",
@@ -55,6 +58,13 @@ android {
             "String",
             "ALIYUN_BAILIAN_MODEL",
             "\"${localProperties.getProperty("ALIYUN_BAILIAN_MODEL", "qwen-plus")}\""
+        )
+        manifestPlaceholders["BAIDU_MAP_AK"] =
+            localProperties.getProperty("BAIDU_MAP_AK", "xp9QRpxM694BZblLU0eAzOkf54DU2Rox")
+        buildConfigField(
+            "String",
+            "BAIDU_MAP_AK",
+            "\"${localProperties.getProperty("BAIDU_MAP_AK", "xp9QRpxM694BZblLU0eAzOkf54DU2Rox")}\""
         )
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -93,6 +103,7 @@ dependencies {
     implementation(libs.okhttp.logging)
     implementation(libs.gson)
     implementation("io.coil-kt:coil:2.7.0")
+    implementation("com.baidu.lbsyun:BaiduMapSDK_Map:7.6.4")
     implementation(libs.room.runtime)
     implementation(libs.glide)
     annotationProcessor(libs.room.compiler)

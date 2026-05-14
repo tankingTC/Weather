@@ -10,6 +10,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public final class RetrofitClient {
 
     private static volatile WeatherApiService weatherApiService;
+    private static volatile BaiduMapApiService baiduMapApiService;
+    private static volatile OkHttpClient sharedOkHttpClient;
 
     private RetrofitClient() {
     }
@@ -18,16 +20,9 @@ public final class RetrofitClient {
         if (weatherApiService == null) {
             synchronized (RetrofitClient.class) {
                 if (weatherApiService == null) {
-                    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-                    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
-                    OkHttpClient okHttpClient = new OkHttpClient.Builder()
-                            .addInterceptor(loggingInterceptor)
-                            .build();
-
                     Retrofit retrofit = new Retrofit.Builder()
                             .baseUrl(normalizeBaseUrl(BuildConfig.QWEATHER_API_HOST))
-                            .client(okHttpClient)
+                            .client(getSharedOkHttpClient())
                             .addConverterFactory(GsonConverterFactory.create())
                             .build();
 
@@ -36,6 +31,38 @@ public final class RetrofitClient {
             }
         }
         return weatherApiService;
+    }
+
+    public static BaiduMapApiService getBaiduMapApiService() {
+        if (baiduMapApiService == null) {
+            synchronized (RetrofitClient.class) {
+                if (baiduMapApiService == null) {
+                    Retrofit retrofit = new Retrofit.Builder()
+                            .baseUrl("https://api.map.baidu.com/")
+                            .client(getSharedOkHttpClient())
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    baiduMapApiService = retrofit.create(BaiduMapApiService.class);
+                }
+            }
+        }
+        return baiduMapApiService;
+    }
+
+    private static OkHttpClient getSharedOkHttpClient() {
+        if (sharedOkHttpClient == null) {
+            synchronized (RetrofitClient.class) {
+                if (sharedOkHttpClient == null) {
+                    HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
+                    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
+                    sharedOkHttpClient = new OkHttpClient.Builder()
+                            .addInterceptor(loggingInterceptor)
+                            .build();
+                }
+            }
+        }
+        return sharedOkHttpClient;
     }
 
     private static String normalizeBaseUrl(String rawHost) {

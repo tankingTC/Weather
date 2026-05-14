@@ -14,7 +14,7 @@
         android:paddingStart="8dp"
         android:paddingEnd="8dp"
         app:navigationIcon="@android:drawable/ic_media_previous"
-        app:title="地图选城"
+        app:title="@string/map_pick_title"
         app:titleTextColor="@color/text_primary" />
 
     <LinearLayout
@@ -30,9 +30,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="点击地图选择城市位置"
+            android:text="@string/map_pick_heading"
             android:textColor="@color/text_primary"
-            android:textSize="16sp"
+            android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
@@ -40,7 +40,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
-            android:text="单击地图放置定位点，我会把这里解析成城市并加入列表"
+            android:text="@string/map_pick_hint"
             android:textColor="@color/text_secondary"
             android:textSize="13sp" />
 
@@ -51,8 +51,8 @@
             android:layout_marginTop="14dp"
             android:background="@drawable/bg_glass_panel">
 
-            <WebView
-                android:id="@+id/mapWebView"
+            <FrameLayout
+                android:id="@+id/mapContainer"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_margin="1dp" />
@@ -64,6 +64,55 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:indeterminateTint="@color/text_neon_primary" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:translationY="-18dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/bg_glass_button"
+                    android:paddingStart="10dp"
+                    android:paddingTop="5dp"
+                    android:paddingEnd="10dp"
+                    android:paddingBottom="5dp"
+                    android:text="@string/map_pick_center_badge"
+                    android:textColor="@color/text_primary"
+                    android:textSize="11sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/centerPinView"
+                    android:layout_width="34dp"
+                    android:layout_height="34dp"
+                    android:layout_marginTop="8dp"
+                    android:contentDescription="@string/map_pick_marker_desc"
+                    android:src="@drawable/ic_map_pin_selected" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/recenterButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_marginTop="14dp"
+                android:layout_marginEnd="14dp"
+                android:background="@drawable/bg_glass_button"
+                android:clickable="true"
+                android:focusable="true"
+                android:paddingStart="12dp"
+                android:paddingTop="7dp"
+                android:paddingEnd="12dp"
+                android:paddingBottom="7dp"
+                android:text="@string/map_pick_recenter"
+                android:textColor="@color/text_primary"
+                android:textSize="12sp"
+                android:textStyle="bold" />
         </FrameLayout>
 
         <LinearLayout
@@ -88,7 +137,7 @@
                     android:id="@+id/selectedCityText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="还未选择城市"
+                    android:text="@string/map_pick_no_city"
                     android:textColor="@color/text_primary"
                     android:textSize="17sp"
                     android:textStyle="bold" />
@@ -98,7 +147,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="6dp"
-                    android:text="请在地图上点选位置"
+                    android:text="@string/map_pick_no_coord"
                     android:textColor="@color/text_secondary"
                     android:textSize="13sp" />
             </LinearLayout>
@@ -109,7 +158,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:enabled="false"
-                android:text="添加并查看"
+                android:text="@string/map_pick_confirm"
                 android:textColor="@color/text_primary"
                 app:backgroundTint="@color/ai_surface_strong"
                 app:cornerRadius="20dp"
