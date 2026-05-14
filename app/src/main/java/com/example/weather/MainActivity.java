@@ -328,7 +328,7 @@ public class MainActivity extends AppCompatActivity {
     private void ensureInitialLocationCitySaved(City city) {
         executorService.execute(() -> {
             AppDatabase database = AppDatabase.getInstance(this);
-            List<City> savedCities = database.cityDao().getAllCities();
+            List<City> savedCities = database.cityDao().getAllCitiesSync();
             if (!savedCities.isEmpty()) {
                 return;
             }
@@ -405,9 +405,7 @@ public class MainActivity extends AppCompatActivity {
 
         currentWeatherData = weatherData;
         WeatherResponse.Now now = weatherResponse.getNow();
-        if (binding.weatherContentLayout.getVisibility() != View.VISIBLE) {
-            binding.weatherContentLayout.setVisibility(View.VISIBLE);
-        }
+        binding.weatherContentLayout.setVisibility(View.VISIBLE);
         if (!weatherContentAnimated) {
             binding.weatherContentLayout.setAlpha(0f);
             binding.weatherContentLayout.setTranslationY(36f);
@@ -720,15 +718,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void bindCurrentSummary(WeatherResponse.Now now) {
         StringBuilder summary = new StringBuilder();
-        summary.append("\u4eca\u5929").append(nonEmpty(now.getText(), "\u5929\u6c14\u5e73\u7a33"));
+        summary.append("今天").append(nonEmpty(now.getText(), "天气平稳"));
         String feelsLike = nonEmpty(now.getFeelsLike(), now.getTemp());
         if (!feelsLike.isEmpty()) {
-            summary.append("\uff0c\u4f53\u611f\u7ea6 ").append(feelsLike).append("\u00b0");
+            summary.append("，体感约 ").append(feelsLike).append("°");
         }
         if (!isEmpty(now.getVis())) {
-            summary.append("\uff0c\u80fd\u89c1\u5ea6 ").append(now.getVis()).append(" km");
+            summary.append("，能见度 ").append(now.getVis()).append(" km");
         }
-        summary.append("\u3002");
+        summary.append("。");
         binding.currentSummaryText.setText(summary.toString());
     }
 
@@ -741,7 +739,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void animateTemperatureText(String tempValue) {
         if (tempValue == null || tempValue.isEmpty()) {
-            binding.currentTempText.setText("--\u00B0");
+            binding.currentTempText.setText("--°");
             return;
         }
         if (tempValue.equals(lastRenderedTemp)) {
@@ -811,7 +809,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void reconcileSelectionAfterListChange() {
         executorService.execute(() -> {
-            List<City> cities = AppDatabase.getInstance(this).cityDao().getAllCities();
+            List<City> cities = AppDatabase.getInstance(this).cityDao().getAllCitiesSync();
             City matchedCity = null;
             if (selectedCity != null) {
                 for (City city : cities) {
@@ -1240,44 +1238,44 @@ public class MainActivity extends AppCompatActivity {
 
     private String buildAssistantSystemPrompt() {
         StringBuilder prompt = new StringBuilder();
-        prompt.append("\u4f60\u662f Weather \u5e94\u7528\u5185\u7684 AI \u5929\u6c14\u52a9\u624b\u3002");
-        prompt.append("\u8bf7\u53ea\u7528\u7b80\u4f53\u4e2d\u6587\u56de\u7b54\uff0c\u8bed\u6c14\u81ea\u7136\u3001\u5b9e\u7528\u3001\u7b80\u6d01\uff0c\u4f18\u5148\u7ed9\u51fa\u53ef\u6267\u884c\u5efa\u8bae\u3002");
-        prompt.append("\u56de\u7b54\u65f6\u7ed3\u5408\u5f53\u524d\u5929\u6c14\u3001\u7a7f\u8863\u5efa\u8bae\u3001\u51fa\u884c\u98ce\u9669\u548c\u7528\u6237\u95ee\u9898\uff0c\u4e0d\u8981\u7f16\u9020\u4e0d\u5b58\u5728\u7684\u6570\u636e\u3002");
-        prompt.append("\u5982\u679c\u7528\u6237\u8be2\u95ee\u548c\u5929\u6c14\u65e0\u5173\u7684\u8bdd\u9898\uff0c\u53ef\u4ee5\u793c\u8c8c\u56de\u5e94\uff0c\u4f46\u5c3d\u91cf\u62c9\u56de\u5929\u6c14\u4e0e\u51fa\u884c\u573a\u666f\u3002");
+        prompt.append("你是 Weather 应用内的 AI 天气助手。");
+        prompt.append("请只用简体中文回答，语气自然、实用、简洁，优先给出可执行建议。");
+        prompt.append("回答时结合当前天气、穿衣建议、出行风险和用户问题，不要编造不存在的数据。");
+        prompt.append("如果用户询问和天气无关的话题，可以礼貌回应，但尽量拉回天气与出行场景。");
 
         if (selectedCity != null) {
-            prompt.append("\u5f53\u524d\u57ce\u5e02\uff1a").append(selectedCity.getName()).append("\u3002");
+            prompt.append("当前城市：").append(selectedCity.getName()).append("。");
         }
         if (currentWeatherData != null && currentWeatherData.getWeatherResponse() != null
                 && currentWeatherData.getWeatherResponse().getNow() != null) {
             WeatherResponse.Now now = currentWeatherData.getWeatherResponse().getNow();
-            prompt.append("\u5f53\u524d\u5929\u6c14\uff1a")
+            prompt.append("当前天气：")
                     .append(now.getText())
-                    .append("\uff0c\u6e29\u5ea6 ").append(now.getTemp()).append("\u00b0\uff0c\u4f53\u611f ")
-                    .append(now.getFeelsLike()).append("\u00b0\uff0c\u6e7f\u5ea6 ")
-                    .append(now.getHumidity()).append("%\uff0c\u98ce\u5411\u98ce\u529b ")
-                    .append(now.getWindDir()).append(now.getWindScale()).append(" \u7ea7\u3002");
+                    .append("，温度 ").append(now.getTemp()).append("°，体感 ")
+                    .append(now.getFeelsLike()).append("°，湿度 ")
+                    .append(now.getHumidity()).append("%，风向风力 ")
+                    .append(now.getWindDir()).append(now.getWindScale()).append(" 级。");
         } else {
-            prompt.append("\u5f53\u524d\u5929\u6c14\u6570\u636e\u6682\u65f6\u4e0d\u53ef\u7528\u3002");
+            prompt.append("当前天气数据暂时不可用。");
         }
         if (currentWeatherData != null && currentWeatherData.getForecastResponse() != null
                 && currentWeatherData.getForecastResponse().getDaily() != null
                 && !currentWeatherData.getForecastResponse().getDaily().isEmpty()) {
             ForecastResponse.Daily today = currentWeatherData.getForecastResponse().getDaily().get(0);
-            prompt.append("\u4eca\u65e5\u9884\u62a5\uff1a")
-                    .append(today.getTextDay()).append("\uff0c\u6700\u4f4e ")
-                    .append(today.getTempMin()).append("\u00b0\uff0c\u6700\u9ad8 ")
-                    .append(today.getTempMax()).append("\u00b0\u3002");
+            prompt.append("今日预报：")
+                    .append(today.getTextDay()).append("，最低 ")
+                    .append(today.getTempMin()).append("°，最高 ")
+                    .append(today.getTempMax()).append("°。");
         }
         if (currentClothingSuggestion != null) {
-            prompt.append("\u5e94\u7528\u5df2\u6709\u7a7f\u8863\u5efa\u8bae\uff1a").append(currentClothingSuggestion.getSuggestion()).append("\u3002");
+            prompt.append("应用已有穿衣建议：").append(currentClothingSuggestion.getSuggestion()).append("。");
             if (currentClothingSuggestion.getAccessoryTip() != null
                     && !currentClothingSuggestion.getAccessoryTip().isEmpty()) {
-                prompt.append("\u914d\u4ef6\u63d0\u9192\uff1a").append(currentClothingSuggestion.getAccessoryTip()).append("\u3002");
+                prompt.append("配件提醒：").append(currentClothingSuggestion.getAccessoryTip()).append("。");
             }
         }
         if (currentWeatherData != null && currentWeatherData.isFromCache()) {
-            prompt.append("\u6ce8\u610f\uff1a\u5f53\u524d\u5929\u6c14\u6765\u81ea\u79bb\u7ebf\u7f13\u5b58\uff0c\u8bf7\u63d0\u9192\u7528\u6237\u6570\u636e\u53ef\u80fd\u4e0d\u662f\u6700\u65b0\u3002");
+            prompt.append("注意：当前天气来自离线缓存，请提醒用户数据可能不是最新。");
         }
         return prompt.toString();
     }

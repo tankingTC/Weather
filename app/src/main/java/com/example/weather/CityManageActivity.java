@@ -68,7 +68,7 @@ public class CityManageActivity extends AppCompatActivity {
         setupToolbar();
         setupRecyclerViews();
         setupSearchAction();
-        loadSavedCities();
+        observeSavedCities();
     }
 
     @Override
@@ -154,14 +154,13 @@ public class CityManageActivity extends AppCompatActivity {
         });
     }
 
-    private void loadSavedCities() {
-        executorService.execute(() -> {
-            List<City> cities = appDatabase.cityDao().getAllCities();
-            runOnUiThread(() -> {
-                cityManageAdapter.submitList(cities, selectedCityId);
-                binding.savedEmptyText.setVisibility(cities.isEmpty() ? View.VISIBLE : View.GONE);
+    private void observeSavedCities() {
+        appDatabase.cityDao().getAllCities().observe(this, cities -> {
+            cityManageAdapter.submitList(cities, selectedCityId);
+            binding.savedEmptyText.setVisibility(cities != null && cities.isEmpty() ? View.VISIBLE : View.GONE);
+            if (cities != null) {
                 refreshCitySummaries(cities);
-            });
+            }
         });
     }
 
@@ -234,10 +233,7 @@ public class CityManageActivity extends AppCompatActivity {
         executorService.execute(() -> {
             appDatabase.cityDao().insertCity(city);
             cityListChanged = true;
-            runOnUiThread(() -> {
-                Toast.makeText(this, "已添加 " + city.getName(), Toast.LENGTH_SHORT).show();
-                loadSavedCities();
-            });
+            runOnUiThread(() -> Toast.makeText(this, "已添加 " + city.getName(), Toast.LENGTH_SHORT).show());
         });
     }
 
@@ -257,10 +253,7 @@ public class CityManageActivity extends AppCompatActivity {
         executorService.execute(() -> {
             appDatabase.cityDao().deleteCity(city);
             cityListChanged = true;
-            runOnUiThread(() -> {
-                Toast.makeText(this, "已删除 " + city.getName(), Toast.LENGTH_SHORT).show();
-                loadSavedCities();
-            });
+            runOnUiThread(() -> Toast.makeText(this, "已删除 " + city.getName(), Toast.LENGTH_SHORT).show());
         });
     }
 

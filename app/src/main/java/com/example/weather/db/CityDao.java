@@ -1,5 +1,6 @@
 package com.example.weather.db;
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Delete;
 import androidx.room.Insert;
@@ -14,7 +15,10 @@ import java.util.List;
 public interface CityDao {
 
     @Query("SELECT * FROM cities ORDER BY addTime DESC")
-    List<City> getAllCities();
+    LiveData<List<City>> getAllCities();
+
+    @Query("SELECT * FROM cities ORDER BY addTime DESC")
+    List<City> getAllCitiesSync();
 
     @Query("SELECT * FROM cities WHERE id = :cityId LIMIT 1")
     City getCityById(String cityId);

@@ -50,20 +50,6 @@ public class MapPickActivity extends AppCompatActivity {
     private static final float CITY_ZOOM = 12.8f;
 
     private final Handler mainHandler = new Handler(Looper.getMainLooper());
-    private final Runnable resolveCenterRunnable = new Runnable() {
-        @Override
-        public void run() {
-            if (baiduMap == null) {
-                return;
-            }
-            MapStatus mapStatus = baiduMap.getMapStatus();
-            if (mapStatus == null || mapStatus.target == null) {
-                return;
-            }
-            resolveMapCenter(mapStatus.target);
-        }
-    };
-
     private ActivityMapPickBinding binding;
     private WeatherRepository weatherRepository;
     private BaiduMapApiService baiduMapApiService;
@@ -74,6 +60,14 @@ public class MapPickActivity extends AppCompatActivity {
     private City pickedCity;
     private boolean finishingSelection;
     private int resolveRequestToken;
+
+    private final Runnable resolveCenterRunnable = () -> {
+        if (baiduMap == null) return;
+        MapStatus mapStatus = baiduMap.getMapStatus();
+        if (mapStatus != null && mapStatus.target != null) {
+            resolveMapCenter(mapStatus.target);
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -371,16 +365,11 @@ public class MapPickActivity extends AppCompatActivity {
     private String extractCityName(BaiduReverseGeocodeResponse.Result result) {
         if (result != null && result.getAddressComponent() != null) {
             BaiduReverseGeocodeResponse.AddressComponent component = result.getAddressComponent();
-            if (!isBlank(component.getCity())) {
-                return trimAdministrativeSuffix(component.getCity());
-            }
-            if (!isBlank(component.getProvince())) {
-                return trimAdministrativeSuffix(component.getProvince());
-            }
+            if (!isBlank(component.getCity())) return trimAdministrativeSuffix(component.getCity());
+            if (!isBlank(component.getDistrict())) return trimAdministrativeSuffix(component.getDistrict());
+            if (!isBlank(component.getProvince())) return trimAdministrativeSuffix(component.getProvince());
         }
-        if (result != null && !isBlank(result.getFormattedAddress())) {
-            return result.getFormattedAddress();
-        }
+        if (result != null && !isBlank(result.getFormattedAddress())) return result.getFormattedAddress();
         return getString(R.string.map_pick_location_fallback);
     }
 
@@ -441,30 +430,24 @@ public class MapPickActivity extends AppCompatActivity {
                 new WeatherRepository.CityLookupCallback() {
                     @Override
                     public void onSuccess(City city) {
-                        City resultCity = city == null ? new City() : city;
-                        resultCity.setLat(pickedCity.getLat());
-                        resultCity.setLon(pickedCity.getLon());
-                        resultCity.setAddTime(System.currentTimeMillis());
-                        if (isBlank(resultCity.getId())) {
-                            resultCity.setId(pickedCity.getId());
-                        }
-                        if (isBlank(resultCity.getName())) {
-                            resultCity.setName(pickedCity.getName());
-                        }
-                        runOnUiThread(() -> finishWithSelectedCity(resultCity));
+                        runOnUiThread(() -> finishWithSelectedCity(buildFinalCity(city)));
                     }
 
                     @Override
                     public void onFailure(String message) {
-                        City fallbackCity = new City();
-                        fallbackCity.setId(pickedCity.getId());
-                        fallbackCity.setName(pickedCity.getName());
-                        fallbackCity.setLat(pickedCity.getLat());
-                        fallbackCity.setLon(pickedCity.getLon());
-                        fallbackCity.setAddTime(System.currentTimeMillis());
-                        runOnUiThread(() -> finishWithSelectedCity(fallbackCity));
+                        runOnUiThread(() -> finishWithSelectedCity(buildFinalCity(null)));
                     }
                 });
+    }
+
+    private City buildFinalCity(City repoCity) {
+        City finalCity = repoCity == null ? new City() : repoCity;
+        finalCity.setLat(pickedCity.getLat());
+        finalCity.setLon(pickedCity.getLon());
+        finalCity.setAddTime(System.currentTimeMillis());
+        if (isBlank(finalCity.getId())) finalCity.setId(pickedCity.getId());
+        if (isBlank(finalCity.getName())) finalCity.setName(pickedCity.getName());
+        return finalCity;
     }
 
     private void finishWithSelectedCity(City city) {

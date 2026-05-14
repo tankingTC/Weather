@@ -54,9 +54,13 @@ public final class RetrofitClient {
             synchronized (RetrofitClient.class) {
                 if (sharedOkHttpClient == null) {
                     HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor();
-                    loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BASIC);
-
+        loggingInterceptor.setLevel(com.example.weather.BuildConfig.DEBUG ? 
+                HttpLoggingInterceptor.Level.BASIC : 
+                HttpLoggingInterceptor.Level.NONE);
                     sharedOkHttpClient = new OkHttpClient.Builder()
+                            .connectTimeout(15, java.util.concurrent.TimeUnit.SECONDS)
+                            .readTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
+                            .writeTimeout(20, java.util.concurrent.TimeUnit.SECONDS)
                             .addInterceptor(loggingInterceptor)
                             .build();
                 }
