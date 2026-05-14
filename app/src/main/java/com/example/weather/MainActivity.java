@@ -72,6 +72,10 @@ import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * 掌管整个应用主界面的核心 Activity。
+ * 作用：主要负责天气首页的渲染、动态天气背景播放、上下滑动视差效果、管理定位、并且集成了 AI 气象助手唤起等复杂的视图交互联动。
+ */
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;

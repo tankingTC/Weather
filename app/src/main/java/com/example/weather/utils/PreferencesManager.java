@@ -6,6 +6,10 @@ import android.text.TextUtils;
 
 import com.example.weather.model.City;
 
+/**
+ * 轻量本地存储管理器 (SharedPreferences 封装)
+ * 作用：主要用来记下一些配置碎碎念（比如上次定位到哪个城市了、上次查询的天气缓存JSON串是什么等）。
+ */
 public class PreferencesManager {
 
     private final SharedPreferences sharedPreferences;

@@ -12,6 +12,10 @@ import androidx.annotation.NonNull;
 
 import com.example.weather.utils.PermissionUtils;
 
+/**
+ * 手机定位助手类
+ * 作用：封装了 Android 原生的 LocationManager。不仅可以获取 GPS/网络 定位，还会自动实现超时放弃机制，避免定位转圈卡死。
+ */
 public class LocationHelper {
 
     public interface LocationCallback {

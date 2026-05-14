@@ -127,6 +127,10 @@ public class MapPickActivity extends AppCompatActivity {
         binding.addAndViewButton.setOnClickListener(v -> confirmSelection());
     }
 
+    /**
+     * 初始化地图控件及核心配置
+     * 作用：把地图展示到界面上，并监听地图的滑动与状态变化，实现拖动地图选址功能
+     */
     private void setupMap() {
         binding.mapContainer.removeAllViews();
         mapView = new MapView(this);
@@ -223,6 +227,10 @@ public class MapPickActivity extends AppCompatActivity {
         mainHandler.postDelayed(resolveCenterRunnable, 280L);
     }
 
+    /**
+     * 根据当前地图中心点，逆向解析地理位置信息
+     * 作用：当用户滑动完地图后，用坐标去请求“这是哪个城市、哪条街道”
+     */
     private void resolveMapCenter(LatLng target) {
         if (target == null) {
             return;

@@ -33,6 +33,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+/**
+ * 城市管理界面 Activity
+ * 作用：处理城市列表的展示、新增、删除，以及提供关键词搜索城市的功能。
+ */
 public class CityManageActivity extends AppCompatActivity {
 
     private ActivityCityManageBinding binding;
@@ -154,6 +158,10 @@ public class CityManageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 监控数据库内的城市列表变化
+     * 作用：一旦增加了新城市或删除了城市，数据库会自动通知此方法刷新界面（LiveData机制）
+     */
     private void observeSavedCities() {
         appDatabase.cityDao().getAllCities().observe(this, cities -> {
             cityManageAdapter.submitList(cities, selectedCityId);
@@ -164,6 +172,10 @@ public class CityManageActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * 批量请求城市的当前温度和简况
+     * 作用：为了在管理列表中显示 "XX市 28° 转晴"，需要额外请求当前天气的实时数据
+     */
     private void refreshCitySummaries(List<City> cities) {
         for (City city : cities) {
             weatherRepository.fetchCitySummary(city, new WeatherRepository.CitySummaryCallback() {
@@ -181,6 +193,10 @@ public class CityManageActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * 发起城市模糊搜索
+     * 作用：读取搜索框里的文本，然后向天气的搜索API发送请求，并将结果填到下方的搜索列表中
+     */
     private void searchCity() {
         String query = binding.searchEditText.getText() == null
                 ? ""

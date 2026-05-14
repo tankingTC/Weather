@@ -26,6 +26,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+/**
+ * 天气数据仓库 (Repository 模式)
+ * 作用：作为数据的统一出入口。它负责判断是去网络请求最新天气，还是暂且返回本地缓存以防无网。
+ * （隔绝了底层的网络框架和数据库细节，让 UI 层只需一句话就能要到天气）
+ */
 public class WeatherRepository {
 
     public interface WeatherCallback {

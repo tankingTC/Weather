@@ -8,6 +8,10 @@ import androidx.room.RoomDatabase;
 
 import com.example.weather.model.City;
 
+/**
+ * Room 数据库配置类
+ * 作用：这是整个 APP 的本地数据库核心。它声明了包含哪些表 (entities = {City.class})，并负责生成唯一的数据库连接实例。
+ */
 @Database(entities = {City.class}, version = 1, exportSchema = false)
 public abstract class AppDatabase extends RoomDatabase {
 

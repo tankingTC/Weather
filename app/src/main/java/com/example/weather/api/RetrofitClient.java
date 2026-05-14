@@ -7,10 +7,17 @@ import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * 统一的网络请求客户端工具类 (基于 Retrofit)
+ * 作用：负责创建和管理所有的网络请求服务，并确保全局只有一个实例（单例模式）
+ */
 public final class RetrofitClient {
 
+    // 缓存“和风天气API”服务实例
     private static volatile WeatherApiService weatherApiService;
+    // 缓存“百度地图API”服务实例
     private static volatile BaiduMapApiService baiduMapApiService;
+    // 全局共享的 HTTP 客户端实例（提供超时、日志等统一配置）
     private static volatile OkHttpClient sharedOkHttpClient;
 
     private RetrofitClient() {
